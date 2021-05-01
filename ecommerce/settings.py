@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-bxr+9l9b^vd7o=a*(qpco9sn+prw(dntlahkxghe)tabq)$eh0
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['yourdomain.com', '127.0.0.1']
 
 
 # Application definition
@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'store',
+    'basket'
 ]
 
 MIDDLEWARE = [
@@ -64,7 +65,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'store.views.categories',
+                'store.context_processors.categories',
+                'basket.context_processors.basket'
             ],
         },
     },
@@ -120,6 +122,10 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 
 STATIC_URL = '/static/'
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static")
+]
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
