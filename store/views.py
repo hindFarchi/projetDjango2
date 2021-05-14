@@ -4,9 +4,17 @@ from .models import Category, Product
 from .forms import ProductFrom
 
 
-def product_crud(request):
+def product_crud(request, id=0):
     if request.user.is_authenticated and request.user.is_superuser:
-        form = ProductFrom(request.POST or None)
+        if id == 0:
+            form = ProductFrom(request.POST or None)
+        else:
+            if request.method == 'GET':
+                form = ProductFrom(instance=Product.objects.get(id=id))
+            else:
+                form = ProductFrom(request.POST, instance=Product.objects.get(id=id))
+            products = Product.objects.all()
+            context = {'products': products, 'form': form}
         if form.is_valid():
             form.save()
             form = ProductFrom()
@@ -16,6 +24,7 @@ def product_crud(request):
         return render(request, 'store/product_crud.html', context)
     else:
         return redirect('/login/login')
+
 
 def product_all(request):
     products = Product.products.all()
@@ -33,3 +42,8 @@ def product_detail(request, slug):
     if product is None:
         return redirect('/')
     return render(request, 'store/products/single.html', {'product': product})
+
+
+def delete_product(request, id):
+    Product.objects.get(id=id).delete()
+    return redirect('/product_crud')

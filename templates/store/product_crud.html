@@ -3,8 +3,8 @@
 {% block title %}Product Crud{% endblock %}
 {% block content %}
     <div class="col-md-12 row mt-5">
-    <div class="col-md-6">
-        <form method="POST" enctype="multipart/form-data">
+    <div class="col-md-6 align-items-center">
+        <form method="POST" enctype="multipart/form-data" action="">
             {% csrf_token %}
             <div class="form-group col-md-6 row">
                 <label>Title :</label>
@@ -56,7 +56,10 @@
                     {% endwith %}
                     {% endwith %}
                 <td>{{ prodcut.category.name }}</td>
-                <td>soon</td>
+                    <td>
+                        <a href="{% url 'store:update_product' prodcut.id %}" class="btn btn-warning">Update</a>
+                        <a href="{% url 'store:delete_product' prodcut.id %}" class="btn btn-danger">Delete</a>
+                    </td>
                 </tr>
             {% endfor %}
             </tbody>
