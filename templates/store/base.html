@@ -78,6 +78,9 @@
                     {% if request.user.is_authenticated %}
                     <a type="button" role="button" class="btn btn-outline-secondary"  href="/logout/logout">Logout</a>
                     {% endif %}
+                    {% if not request.user.is_authenticated %}
+                        <a type="button" role="button" class="btn btn-outline-secondary"  href="/login/login">Login</a>
+                    {%  endif %}
                 </div>
             </div>
         </nav>

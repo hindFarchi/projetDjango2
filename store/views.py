@@ -1,7 +1,21 @@
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, render, redirect
 
 from .models import Category, Product
+from .forms import ProductFrom
 
+
+def product_crud(request):
+    if request.user.is_authenticated and request.user.is_superuser:
+        form = ProductFrom(request.POST or None)
+        if form.is_valid():
+            form.save()
+            form = ProductFrom()
+        products = Product.objects.all()
+        messages = form.errors
+        context = {'products': products, 'form': form, 'messages': messages}
+        return render(request, 'store/product_crud.html', context)
+    else:
+        return redirect('/login/login')
 
 def product_all(request):
     products = Product.products.all()
@@ -16,4 +30,6 @@ def category_list(request, category_slug=None):
 
 def product_detail(request, slug):
     product = get_object_or_404(Product, slug=slug, in_stock=True)
+    if product is None:
+        return redirect('/')
     return render(request, 'store/products/single.html', {'product': product})

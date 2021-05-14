@@ -1,0 +1,66 @@
+{% extends "./base.html" %}
+{% load static %}
+{% block title %}Product Crud{% endblock %}
+{% block content %}
+    <div class="col-md-12 row mt-5">
+    <div class="col-md-6">
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group col-md-6 row">
+                <label>Title :</label>
+                {{ form.title }}
+            </div>
+            <div class="form-group col-md-6 row">
+                <label>Price :</label>
+                {{ form.price }}
+            </div>
+            <div class="form-group col-md-6 row">
+                <label>Description :</label>
+                {{ form.description }}
+            </div>
+            <div class="form-group col-md-6 row">
+                <label>Category :</label>
+                {{ form.category }}
+            </div>
+            <div class="form-group col-md-6 row">
+                <label>Image :</label>
+                {{ form.image }}
+            </div>
+            <button type="submit" class="btn btn-primary mt-2" value="Save">Save</button>
+        </form>
+        {% for m in messages %}
+            <p>{{ m }}</p>
+        {% endfor %}
+    </div>
+    <div class="col-md-6">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>title</th>
+                <th>description</th>
+                <th>price</th>
+                <th>image</th>
+                <th>category</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for prodcut in products %}
+                <tr>
+                <td>{{ prodcut.title }}</td>
+                <td>{{ prodcut.description }}</td>
+                <td>{{ prodcut.price }}</td>
+                    {% with url1=prodcut.image|stringformat:"s" %}
+                    {% with url2="../../media/"|add:url1 %}
+                    <td><img src={{ url2 }} width="42" height="42"></td>
+                    {% endwith %}
+                    {% endwith %}
+                <td>{{ prodcut.category.name }}</td>
+                <td>soon</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    </div>
+{% endblock %}
